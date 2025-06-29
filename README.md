@@ -8,12 +8,14 @@
   - [🎯 คำสั่งหลัก (Basic Commands)](#basic-commands)
   - [🚀 คำสั่งเฉพาะ Branch (Branch-Specific Commands)](#branch-specific-commands)
   - [🔧 คำสั่ง Branch Management](#branch-management-commands)
+  - [💡 คำสั่ง Professional DevOps](#devops-commands)
 - [โครงสร้างไฟล์](#file-structure)
 - [การติดตั้ง](#installation)
 - [📝 รายละเอียดคำสั่ง](#command-details)
   - [คำสั่งหลัก](#basic-command-details)
   - [คำสั่งเฉพาะ Branch](#branch-command-details)
   - [คำสั่ง Branch Management](#branch-management-details)
+  - [คำสั่ง Professional DevOps](#devops-command-details)
 - [🔄 Session Recovery & Task Switching](#session-recovery)
   - [กรณี Claude หลุด/เครื่องดับ](#claude-disconnected)
   - [กรณีต้องการสลับไปทำงานอื่น](#task-switching)
@@ -23,6 +25,7 @@
   - [Hotfix Flow](#hotfix-flow)
   - [Bug Fix Flow](#bugfix-flow)
   - [Improvement Flow](#improvement-flow)
+  - [Professional Development Flow](#professional-flow)
 - [💾 โครงสร้างไฟล์ Session แบบ Branch-Aware](#session-file-structure)
 - [🛡️ Best Practices สำหรับ Session Management](#best-practices)
   - [การป้องกันการสูญเสีย Context](#prevent-context-loss)
@@ -52,6 +55,8 @@
 - **ติดตามการเปลี่ยนแปลง**: ตรวจสอบการเปลี่ยนแปลงใน git, branch status, และ merge readiness
 - **ถ่ายทอดความรู้**: ช่วยให้ session ในอนาคตเข้าใจงานที่ผ่านมาโดยไม่ต้องวิเคราะห์โค้ดทั้งหมดใหม่
 - **เตรียมพร้อมสำหรับ PR**: สร้าง PR template และตรวจสอบความพร้อมก่อน merge
+- **Professional DevOps**: เตือนและบังคับใช้ best practices ในการพัฒนา
+- **Quality Assurance**: ตรวจสอบคุณภาพโค้ดอัตโนมัติสำหรับหลายภาษา
 
 <a name="git-flow-support"></a>
 ## 🌿 Git Flow Support
@@ -162,6 +167,28 @@
 /project:session-ready-for-review
 ```
 
+<a name="devops-commands"></a>
+### 💡 คำสั่ง Professional DevOps
+
+#### เริ่มงานแบบ Professional DevOps
+```bash
+# เตือน best practices สำหรับ Claude Code
+/project:start-work Write the full-stack front-end for me
+```
+
+#### ตรวจสอบคุณภาพงาน
+```bash
+# ตรวจสอบแบบ interactive (เลือกภาษาและประเภทการเช็ค)
+/project:check-work
+
+# ตรวจสอบเฉพาะภาษา
+/project:check-work --python --tests
+/project:check-work --react --typescript --lint
+
+# ตรวจสอบทุกอย่าง
+/project:check-work --all --full
+```
+
 <a name="file-structure"></a>
 ## โครงสร้างไฟล์
 
@@ -182,7 +209,10 @@
 │   │
 │   ├── session-branch-status.md     # ดู branch status
 │   ├── session-sync-branch.md       # sync กับ base branch
-│   └── session-ready-for-review.md  # เตรียม PR
+│   ├── session-ready-for-review.md  # เตรียม PR
+│   │
+│   ├── start-work.md               # Professional DevOps reminder
+│   └── check-work.md               # Quality check tool
 
 └── sessions/                    # โฟลเดอร์เก็บ session
     ├── .current-session        # ไฟล์ติดตาม session ที่ใช้งานอยู่
@@ -363,6 +393,36 @@ EOF
 - Generate PR template
 - Suggest reviewers
 
+<a name="devops-command-details"></a>
+### คำสั่ง Professional DevOps
+
+#### /project:start-work [description]
+
+**พารามิเตอร์:**
+- `[description]` - คำอธิบายงานที่จะทำ
+
+**การทำงาน:**
+- แสดง DevOps best practices reminder
+- เน้นการแบ่งงานเป็น subtasks และใช้ sub-agents
+- เตือนเรื่องการจัดการไฟล์แบบมืออาชีพ
+- ห้าม shortcuts, hardcode หรือการเดา
+
+#### /project:check-work [options]
+
+**พารามิเตอร์:**
+- ไม่ใส่ - แบบ interactive (ถามว่าจะเช็คอะไร)
+- `--python`, `--react`, `--typescript`, `--rust`, `--cpp` - เลือกภาษา
+- `--all` - เช็คทุกภาษา
+- `--tests`, `--lint`, `--full` - เลือกประเภทการเช็ค
+
+**การทำงาน:**
+- Double-check การเปลี่ยนแปลงทั้งหมด
+- อ่านไฟล์ที่แก้ไข
+- รัน unit tests ตามภาษา
+- ใช้ linters และ type checkers
+- เปรียบเทียบ diffs
+- สร้าง quality report พร้อม actionable feedback
+
 <a name="session-recovery"></a>
 ## 🔄 Session Recovery & Task Switching
 
@@ -530,6 +590,34 @@ Day 3: /project:session-update [finish work]
 /project:session-update New: 200ms average (75% improvement)
 
 # 5. จบ session
+/project:session-end
+```
+
+<a name="professional-flow"></a>
+### Professional Development Flow
+```bash
+# 1. เริ่มงานแบบ professional
+/project:start-work Implement user authentication system
+
+# 2. พัฒนา feature
+/project:session-start-feature user-auth
+
+# 3. ทำงานและ update
+/project:session-update Added JWT implementation
+
+# 4. ตรวจสอบคุณภาพหลัง major changes
+/project:check-work --typescript --react --full
+
+# 5. แก้ไขตาม feedback
+# ... fix issues ...
+
+# 6. เช็คอีกครั้ง
+/project:check-work --tests
+
+# 7. เตรียม review
+/project:session-ready-for-review
+
+# 8. จบ session
 /project:session-end
 ```
 
@@ -904,6 +992,10 @@ git checkout [branch]                   # Return to branch
 git stash pop                          # Restore work
 /project:session-start [name]-continue  # Continue session
 
+# Quality check
+/project:check-work                     # Interactive check
+/project:check-work --python --tests    # Specific check
+
 # Finish work
 /project:session-ready-for-review       # Pre-PR check
 /project:session-end                    # Final summary
@@ -957,6 +1049,12 @@ main → hotfix/* → PR → main + develop
 
 ### Q: Session file ใหญ่เกินไปทำไงดี?
 **A**: พิจารณา end session แล้วเริ่มใหม่ หรือแยกเป็น sub-tasks
+
+### Q: ควรใช้ start-work และ check-work เมื่อไหร่?
+**A**: ใช้ `start-work` เมื่อเริ่มงานใหม่เพื่อเตือน best practices, ใช้ `check-work` หลังทำ major changes
+
+### Q: check-work รองรับภาษาอะไรบ้าง?
+**A**: Python, JavaScript/React, TypeScript, Rust, C/C++ - เลือกเช็คเฉพาะภาษาหรือทั้งหมดได้
 
 <a name="additional-resources"></a>
 ## 📚 แหล่งข้อมูลเพิ่มเติม
